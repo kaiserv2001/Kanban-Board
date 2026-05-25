@@ -15,7 +15,8 @@ connectDB().then(() => {
   setInterval(checkDeadlines, 24 * 60 * 60 * 1000);
 });
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
+app.use(cors({ origin: (origin, cb) => cb(null, allowedOrigins.includes(origin) || !origin), credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
