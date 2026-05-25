@@ -1,0 +1,28 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { connectDB } from './config/db.js';
+import authRoutes from './routes/auth.js';
+import applicationRoutes from './routes/applications.js';
+import { errorHandler } from './middleware/errorHandler.js';
+import { checkDeadlines } from './utils/deadlineReminder.js';
+
+const app = express();
+
+connectDB().then(() => {
+  checkDeadlines();
+  setInterval(checkDeadlines, 24 * 60 * 60 * 1000);
+});
+
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(express.json());
+app.use(cookieParser());
+
+app.use('/api/auth', authRoutes);
+app.use('/api/applications', applicationRoutes);
+
+app.use(errorHandler);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
