@@ -1,0 +1,3 @@
+[    1015ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://kanban-board-qy6n.onrender.com/register:0
+[  106438ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://kanban-board-qy6n.onrender.com/api/applications:0
+[  106542ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ https://kanban-board-qy6n.onrender.com/login:0

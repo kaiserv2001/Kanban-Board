@@ -9,12 +9,17 @@ export default function DemoNotice() {
   const { user } = useAuth();
   const [dismissed, setDismissed] = useState(false);
 
-  if (!user || dismissed) return null;
+  if (dismissed) return null;
 
-  const isDemoAccount = user.email === DEMO_EMAIL;
-  const message = isDemoAccount
-    ? 'You are signed in to the shared demo account. Anyone can view and edit this data, so treat it as a sandbox.'
-    : 'Demo project — for demonstration purposes only. This account and all its data are automatically deleted 48 hours after sign-up.';
+  let message;
+  if (!user) {
+    // Logged out (login / register pages) — let visitors know before they sign up.
+    message = 'This is a demo project for demonstration purposes only. Accounts you create are automatically deleted 48 hours after sign-up.';
+  } else if (user.email === DEMO_EMAIL) {
+    message = 'You are signed in to the shared demo account. Anyone can view and edit this data, so treat it as a sandbox.';
+  } else {
+    message = 'Demo project — for demonstration purposes only. This account and all its data are automatically deleted 48 hours after sign-up.';
+  }
 
   return (
     <div

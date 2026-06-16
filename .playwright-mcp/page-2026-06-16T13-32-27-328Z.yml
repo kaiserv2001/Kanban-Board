@@ -1,0 +1,28 @@
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - link "Dashboard" [ref=e4] [cursor=pointer]:
+      - /url: /
+    - link "Applications" [active] [ref=e5] [cursor=pointer]:
+      - /url: /applications
+    - link "Kanban" [ref=e6] [cursor=pointer]:
+      - /url: /kanban
+    - generic [ref=e7]:
+      - button "🌙" [ref=e8] [cursor=pointer]
+      - link "Sign In" [ref=e52] [cursor=pointer]:
+        - /url: /login
+  - generic [ref=e54]:
+    - heading "Sign In" [level=1] [ref=e55]
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - generic [ref=e58]: Email
+        - textbox "Email" [ref=e59]:
+          - /placeholder: you@example.com
+      - generic [ref=e60]:
+        - generic [ref=e61]: Password
+        - textbox "Password" [ref=e62]:
+          - /placeholder: Your password
+      - button "Sign In" [ref=e63] [cursor=pointer]
+    - paragraph [ref=e64]:
+      - text: No account?
+      - link "Register" [ref=e65] [cursor=pointer]:
+        - /url: /register
