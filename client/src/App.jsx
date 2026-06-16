@@ -16,14 +16,22 @@ const Private = ({ children }) => {
   return user ? children : <Navigate to="/login" replace />;
 };
 
+// Login / Register are for logged-out users only — redirect to the dashboard
+// if a session is already active.
+const PublicOnly = ({ children }) => {
+  const { user, loading } = useAuth();
+  if (loading) return <Spinner />;
+  return user ? <Navigate to="/" replace /> : children;
+};
+
 export default function App() {
   return (
     <>
       <Navbar />
       <DemoNotice />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />
+        <Route path="/register" element={<PublicOnly><Register /></PublicOnly>} />
         <Route path="/" element={<Private><Dashboard /></Private>} />
         <Route path="/applications" element={<Private><Applications /></Private>} />
         <Route path="/kanban" element={<Private><KanbanPage /></Private>} />
