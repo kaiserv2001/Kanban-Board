@@ -1,0 +1,28 @@
+# Render Blueprint — single web service that runs the API and serves the React build.
+# Docs: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: jobhunt
+    runtime: node
+    plan: free
+    buildCommand: npm install --prefix server && npm install --prefix client && npm run build --prefix client
+    startCommand: node server/server.js
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Set these in the Render dashboard (marked "sync: false" so they are NOT
+      # committed to git). MONGO_URI and JWT_SECRET are required.
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      # Optional — only needed for deadline reminder emails.
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
