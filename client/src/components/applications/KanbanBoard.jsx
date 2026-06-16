@@ -1,5 +1,5 @@
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useApplications } from '../../hooks/useApplications.js';
 import ApplicationCard from './ApplicationCard.jsx';
 import { useNavigate } from 'react-router-dom';
@@ -13,10 +13,18 @@ const COLUMN_LABELS = {
 };
 
 export default function KanbanBoard() {
-  const { applications, fetchApplications, updateStatus } = useApplications();
+  const { applications, fetchApplications, updateStatus, deleteApplication } = useApplications();
   const navigate = useNavigate();
+  const [deleteTarget, setDeleteTarget] = useState(null); // id to confirm-delete
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   useEffect(() => { fetchApplications(); }, [fetchApplications]);
+
+  const handleDeleteConfirm = async () => {
+    setDeleteLoading(true);
+    try { await deleteApplication(deleteTarget); }
+    finally { setDeleteLoading(false); setDeleteTarget(null); }
+  };
 
   const byStatus = STATUSES.reduce((acc, s) => {
     acc[s] = applications.filter(a => a.status === s);
@@ -63,7 +71,7 @@ export default function KanbanBoard() {
                           <ApplicationCard
                             application={app}
                             onEdit={() => navigate(`/applications/${app.id}`)}
-                            onDelete={() => {}}
+                            onDelete={() => setDeleteTarget(app.id)}
                           />
                         </div>
                       )}
@@ -76,6 +84,40 @@ export default function KanbanBoard() {
           </div>
         ))}
       </div>
+
+      {/* Delete confirmation modal */}
+      {deleteTarget && (
+        <div className="modal-overlay">
+          <div className="modal" style={{ maxWidth: 400 }}>
+            <div className="modal-header">
+              <h2>Delete Application</h2>
+            </div>
+            <div style={{ padding: '16px 24px 24px' }}>
+              <p style={{ margin: '0 0 20px', color: '#374151' }}>
+                Are you sure? This cannot be undone.
+              </p>
+              <div className="modal-actions">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setDeleteTarget(null)}
+                  disabled={deleteLoading}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="btn"
+                  style={{ background: '#ef4444', color: '#fff' }}
+                  data-testid="delete-confirm-btn"
+                  onClick={handleDeleteConfirm}
+                  disabled={deleteLoading}
+                >
+                  {deleteLoading ? 'Deleting…' : 'Delete'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </DragDropContext>
   );
 }
