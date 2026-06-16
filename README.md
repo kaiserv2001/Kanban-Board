@@ -2,6 +2,24 @@
 
 A full-stack MERN job application tracker with Kanban board, dashboard analytics, and deadline reminder emails.
 
+## 🚀 Live Demo
+
+**👉 https://kanban-board-qy6n.onrender.com**
+
+Try it instantly with the demo account (pre-loaded with sample applications):
+
+| | |
+|--|--|
+| **Email** | `demo@demo.com` |
+| **Password** | `demo1234` |
+
+…or register your own account in a few seconds.
+
+> **Notes for reviewers**
+> - **First load may take ~30–50 seconds.** The app is hosted on a free tier that sleeps after inactivity and cold-starts on the first request. Subsequent loads are instant.
+> - **The demo is self-cleaning.** Visitor accounts (and their data) are automatically deleted **48 hours** after sign-up via a MongoDB TTL index, so feel free to create test data — it won't linger. The `demo@demo.com` account is permanent.
+> - **Architecture:** deployed as a single service — Express serves both the REST API and the built React app from one origin (no CORS / third-party-cookie issues), backed by MongoDB Atlas.
+
 ## Features
 
 - **Application CRUD** — add, edit, delete job applications with status, dates, URL, and description
@@ -96,7 +114,7 @@ server/
 ├── middleware/             # JWT auth, error handler
 ├── models/                 # User, Application
 ├── routes/                 # auth, applications
-└── utils/                  # mailer, deadlineReminder
+└── utils/                  # mailer, deadlineReminder, seedDemo
 ```
 
 ## API Endpoints

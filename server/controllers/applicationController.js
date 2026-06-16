@@ -22,7 +22,14 @@ export const createApplication = catchAsync(async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
 
-  const app = await Application.create({ ...req.body, user: req.user._id });
+  // Inherit the owner's expiry so visitor data is cleaned up together; the demo
+  // account has no expiresAt, so its applications persist. (Set after the spread
+  // so a client can't override it via req.body.)
+  const app = await Application.create({
+    ...req.body,
+    user: req.user._id,
+    expiresAt: req.user.expiresAt,
+  });
   res.status(201).json({ application: app });
 });
 

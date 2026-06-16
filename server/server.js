@@ -9,10 +9,12 @@ import authRoutes from './routes/auth.js';
 import applicationRoutes from './routes/applications.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { checkDeadlines } from './utils/deadlineReminder.js';
+import { seedDemo } from './utils/seedDemo.js';
 
 const app = express();
 
 connectDB().then(() => {
+  seedDemo();
   checkDeadlines();
   setInterval(checkDeadlines, 24 * 60 * 60 * 1000);
 });

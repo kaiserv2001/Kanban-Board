@@ -32,6 +32,9 @@ const applicationSchema = new mongoose.Schema(
         date:  { type: Date, default: Date.now },
       },
     ],
+    // Mirrors the owning user's expiry so a visitor's applications are cleaned up
+    // along with their account. Demo-account applications leave this unset.
+    expiresAt:   { type: Date },
   },
   {
     timestamps: true,
@@ -40,6 +43,7 @@ const applicationSchema = new mongoose.Schema(
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
+        delete ret.expiresAt;
       },
     },
   }
@@ -47,6 +51,8 @@ const applicationSchema = new mongoose.Schema(
 
 applicationSchema.index({ user: 1, status: 1 });
 applicationSchema.index({ user: 1, company: 'text', role: 'text' });
+// TTL index — auto-deletes a visitor's applications once expiresAt is reached.
+applicationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 export { STATUSES };
 export default mongoose.model('Application', applicationSchema);
