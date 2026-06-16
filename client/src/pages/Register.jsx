@@ -80,6 +80,9 @@ export default function Register() {
         <p className="auth-footer">
           Have an account? <Link to="/login">Sign in</Link>
         </p>
+        <p className="auth-footer" style={{ marginTop: 4 }}>
+          Just exploring? <Link to="/login">Use the demo account</Link> — no sign-up needed.
+        </p>
       </div>
     </div>
   );

@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
 
+const DEMO_EMAIL = 'demo@demo.com';
+const DEMO_PASSWORD = 'demo1234';
+
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -18,6 +21,19 @@ export default function Login() {
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      await login(DEMO_EMAIL, DEMO_PASSWORD);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Demo login failed');
     } finally {
       setLoading(false);
     }
@@ -64,6 +80,35 @@ export default function Login() {
             {loading ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
+
+        <div
+          data-testid="demo-box"
+          style={{
+            marginTop: 20,
+            padding: 16,
+            border: '1px dashed #cbd5e1',
+            borderRadius: 8,
+            background: '#f8fafc',
+          }}
+        >
+          <p style={{ margin: '0 0 4px', fontWeight: 600, fontSize: 14 }}>
+            👋 Just exploring? Use the demo account
+          </p>
+          <p style={{ margin: '0 0 12px', fontSize: 13, color: '#64748b' }}>
+            No sign-up needed. Email <code>{DEMO_EMAIL}</code> · Password <code>{DEMO_PASSWORD}</code>
+          </p>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            data-testid="demo-login-btn"
+            onClick={handleDemoLogin}
+            disabled={loading}
+            style={{ width: '100%' }}
+          >
+            {loading ? 'Signing in…' : 'Sign in as demo'}
+          </button>
+        </div>
+
         <p className="auth-footer">
           No account? <Link to="/register">Register</Link>
         </p>
