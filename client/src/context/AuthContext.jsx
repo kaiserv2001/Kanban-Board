@@ -14,6 +14,14 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
+  // Clear the session whenever any request comes back 401 — e.g. a visitor's
+  // account was auto-deleted after 48h. PrivateRoute then redirects to /login.
+  useEffect(() => {
+    const onUnauthorized = () => setUser(null);
+    window.addEventListener('auth:unauthorized', onUnauthorized);
+    return () => window.removeEventListener('auth:unauthorized', onUnauthorized);
+  }, []);
+
   const login = async (email, password) => {
     const res = await api.post('/auth/login', { email, password });
     setUser(res.data.user);

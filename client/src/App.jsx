@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.js';
 import Navbar from './components/common/Navbar.jsx';
+import DemoNotice from './components/common/DemoNotice.jsx';
 import Spinner from './components/common/Spinner.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <>
       <Navbar />
+      <DemoNotice />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
